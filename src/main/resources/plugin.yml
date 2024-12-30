@@ -1,0 +1,11 @@
+name: DynmapCommand
+version: '${project.version}'
+main: me.sialim.dynmapcommand.DynmapCommand
+api-version: '1.19'
+commands:
+  map:
+    description: Sends a Dynmap link to the player.
+    usage: /<command>
+  mapreload:
+    description: Reloads the configuration for the map URL.
+    usage: /<command>
