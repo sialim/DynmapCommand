@@ -16,6 +16,10 @@ public final class DynmapCommand extends JavaPlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        loadConfigValues();
+    }
+
+    private void loadConfigValues() {
         dynmapUrl = getConfig().getString("dynmap-url", "http://replace-in-config.com");
         messageTemplate = getConfig().getString("message", "Click here to open the map: {url}");
     }
@@ -46,7 +50,7 @@ public final class DynmapCommand extends JavaPlugin {
             if (sender instanceof Player p) return false;
             if (sender instanceof ConsoleCommandSender) {
                 reloadConfig();
-                dynmapUrl = getConfig().getString("dynmap-url", "http://your-dynmap-url.com");
+                loadConfigValues();
                 sender.sendMessage(ChatColor.GREEN + "Map URL configuration reloaded.");
                 return true;
             }
