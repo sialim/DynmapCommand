@@ -1,5 +1,7 @@
 package me.sialim.dynmapcommand;
 
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -21,8 +23,23 @@ public final class DynmapCommand extends JavaPlugin {
     @Override public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (command.getName().equalsIgnoreCase("map")) {
             if (sender instanceof Player p) {
-                String message = messageTemplate.replace("{url}", dynmapUrl);
-                p.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+                String plainMessage = messageTemplate.replace("{url}", dynmapUrl);
+                String[] splitMessage = plainMessage.split("\\{url\\}", 2);
+
+
+                String beforeUrl = ChatColor.translateAlternateColorCodes('&', splitMessage[0]);
+                String afterUrl = splitMessage.length > 1
+                        ? ChatColor.translateAlternateColorCodes('&', splitMessage[1])
+                        : "";
+
+                TextComponent message = new TextComponent(beforeUrl);
+                TextComponent urlComponent = new TextComponent(dynmapUrl);
+                urlComponent.setColor(net.md_5.bungee.api.ChatColor.BLUE);
+                urlComponent.setUnderlined(true);
+                urlComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, dynmapUrl));
+                message.addExtra(urlComponent);
+                if (!afterUrl.isEmpty()) message.addExtra(afterUrl);
+                p.spigot().sendMessage(message);
                 return true;
             }
         } else if (command.getName().equalsIgnoreCase("mapreload")) {
